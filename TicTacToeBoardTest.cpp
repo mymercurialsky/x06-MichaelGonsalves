@@ -18,3 +18,57 @@ TEST(TicTacToeBoardTest, sanityCheck)
 {
 	ASSERT_TRUE(true);
 }
+
+TEST(TicTacToeBoardTest, checkConstructorClearedBoard){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(0,1) == Blank);
+}
+
+TEST(TicTacToeBoardTest, checkFirstTurnIsX){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(0,0) == X);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePiece){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(10,15) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkValidPlacePiece){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(0,2) == X);
+}
+
+TEST(TicTacToeBoardTest, checkPlaceNotEmpty){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.placePiece(0,0) == X);
+}
+
+TEST(TicTacToeBoardTest, checkTurnsAreToggling){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	ASSERT_FALSE(tb.placePiece(0,1) == X);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBounds){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(10,0) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
+
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.getPiece(0,0) == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinner){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(1,2);
+	tb.placePiece(0,1);
+	tb.placePiece(1,0);
+	tb.placePiece(0,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
