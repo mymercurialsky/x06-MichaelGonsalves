@@ -63,6 +63,12 @@ TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
 	ASSERT_TRUE(tb.getPiece(0,0) == X);
 }
 
+TEST(TicTacToeBoardTest, checkNoWinner){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.getWinner() == Blank);
+}
+
 TEST(TicTacToeBoardTest, checkWinner){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
@@ -71,4 +77,18 @@ TEST(TicTacToeBoardTest, checkWinner){
 	tb.placePiece(1,0);
 	tb.placePiece(0,2);
 	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkFullBoard){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(0,1);
+	tb.placePiece(0,2);
+	tb.placePiece(1,0);
+	tb.placePiece(1,1);
+	tb.placePiece(1,2);
+	tb.placePiece(2,0);
+	tb.placePiece(2,1);
+	tb.placePiece(2,2);
+	ASSERT_TRUE(tb.getWinner() == Blank);
 }

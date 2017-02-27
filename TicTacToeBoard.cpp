@@ -70,5 +70,35 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  return Invalid;
+  	if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != Blank)
+		return getPiece(0, 0);	
+	else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != Blank)
+		return getPiece(1,0);
+	else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != Blank)
+		return getPiece(2,0);
+	else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != Blank)
+		return getPiece(0,0);
+	else if (board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != Blank)
+		return getPiece(0,1);
+	else if	(board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != Blank)
+		return getPiece(0,2);
+	else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != Blank)
+		return getPiece(0,0);
+	else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] != Blank)
+		return getPiece(2,0);
+	
+	// Check to see if board is full
+	bool full = true;
+	for (int i = 0; i < BOARDSIZE; i++){
+		for (int j = 0; j < BOARDSIZE; j++){
+		if (board[i][j] == Blank){
+			full = false;
+			break;
+		}
+		}
+	}
+	if (full) return Blank;	
+
+
+	return Invalid;
 }
