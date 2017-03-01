@@ -212,16 +212,16 @@ TEST(TicTacToeBoardTest, checkNoWinnerSecondTwoPiecesInRow){
 TEST(TicTacToeBoardTest, checkNoWinnerFirstTwoPiecesInCol){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
+	tb.placePiece(1,1);
 	tb.placePiece(1,0);
-	tb.placePiece(0,1);
 	ASSERT_TRUE(tb.getWinner() == Invalid);
 }
 
 TEST(TicTacToeBoardTest, checkNoWinnerSecondTwoPiecesInCol){
 	TicTacToeBoard tb;
-	tb.placePiece(0,1);
 	tb.placePiece(1,0);
-	tb.placePiece(0,2);
+	tb.placePiece(1,1);
+	tb.placePiece(2,0);
 	ASSERT_TRUE(tb.getWinner() == Invalid);
 }
 
