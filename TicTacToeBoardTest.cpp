@@ -21,7 +21,30 @@ TEST(TicTacToeBoardTest, sanityCheck)
 
 TEST(TicTacToeBoardTest, checkConstructorClearedBoard){
 	TicTacToeBoard tb;
-	ASSERT_TRUE(tb.getPiece(0,1) == Blank);
+	bool clear = true;
+	for (int i = 0; i < BOARDSIZE; i++){
+		for (int j = 0; j < BOARDSIZE; j++){
+			if (tb.getPiece(i, j) != Blank){
+				clear = false;
+				break;
+			}
+		}
+	}
+	ASSERT_TRUE(clear == true);
+}
+
+TEST(TicTacToeBoardTest, checkClearBoard){
+	TicTacToeBoard tb;
+	bool clear = true;
+	for (int i = 0; i < BOARDSIZE; i++){
+		for (int j = 0; j < BOARDSIZE; j++){
+			if (tb.getPiece(i, j) != Blank){
+				clear = false;
+				break;
+			}
+		}
+	}
+	ASSERT_TRUE(clear == true);
 }
 
 TEST(TicTacToeBoardTest, checkFirstTurnIsX){
@@ -45,15 +68,37 @@ TEST(TicTacToeBoardTest, checkPlaceNotEmpty){
 	ASSERT_TRUE(tb.placePiece(0,0) == X);
 }
 
-TEST(TicTacToeBoardTest, checkTurnsAreToggling){
+TEST(TicTacToeBoardTest, checkTurnsAreTogglingX){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
-	ASSERT_FALSE(tb.placePiece(0,1) == X);
+	ASSERT_TRUE(tb.placePiece(0,1) == O);
 }
 
-TEST(TicTacToeBoardTest, checkGetPieceOutOfBounds){
+TEST(TicTacToeBoardTest, checkTurnsAreTogglingO){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(0,1);
+	ASSERT_TRUE(tb.placePiece(0,2) == X);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueTooHigh){
 	TicTacToeBoard tb;
 	ASSERT_TRUE(tb.getPiece(10,0) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(-1, 2) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsColValueTooHigh){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(0,10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsColValueNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(2, -1) == Invalid);
 }
 
 TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
@@ -66,10 +111,10 @@ TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
 TEST(TicTacToeBoardTest, checkNoWinner){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
-	ASSERT_TRUE(tb.getWinner() == Blank);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
 }
 
-TEST(TicTacToeBoardTest, checkWinner){
+TEST(TicTacToeBoardTest, checkWinnerHorizontalTop){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
 	tb.placePiece(1,2);
@@ -79,16 +124,86 @@ TEST(TicTacToeBoardTest, checkWinner){
 	ASSERT_TRUE(tb.getWinner() == X);
 }
 
+TEST(TicTacToeBoardTest, checkWinnerHorizontalMiddle){
+	TicTacToeBoard tb;
+	tb.placePiece(1,0);
+	tb.placePiece(0,2);
+	tb.placePiece(1,1);
+	tb.placePiece(0,0);
+	tb.placePiece(1,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerHorizontalBottom){
+	TicTacToeBoard tb;
+	tb.placePiece(2,0);
+	tb.placePiece(1,2);
+	tb.placePiece(2,1);
+	tb.placePiece(1,0);
+	tb.placePiece(2,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerVerticalLeft){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(0,2);
+	tb.placePiece(1,0);
+	tb.placePiece(1,2);
+	tb.placePiece(2,0);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerVerticalMiddle){
+	TicTacToeBoard tb;
+	tb.placePiece(0,1);
+	tb.placePiece(0,2);
+	tb.placePiece(1,1);
+	tb.placePiece(1,2);
+	tb.placePiece(2,1);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerVerticalRight){
+	TicTacToeBoard tb;
+	tb.placePiece(0,2);
+	tb.placePiece(1,1);
+	tb.placePiece(1,2);
+	tb.placePiece(1,0);
+	tb.placePiece(2,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerDiagonalTopLeft){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(0,2);
+	tb.placePiece(1,1);
+	tb.placePiece(1,2);
+	tb.placePiece(2,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
+TEST(TicTacToeBoardTest, checkWinnerDiagonalBottomLeft){
+	TicTacToeBoard tb;
+	tb.placePiece(2,0);
+	tb.placePiece(0,1);
+	tb.placePiece(1,1);
+	tb.placePiece(1,2);
+	tb.placePiece(0,2);
+	ASSERT_TRUE(tb.getWinner() == X);
+}
+
 TEST(TicTacToeBoardTest, checkFullBoard){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
 	tb.placePiece(0,1);
 	tb.placePiece(0,2);
-	tb.placePiece(1,0);
 	tb.placePiece(1,1);
-	tb.placePiece(1,2);
+	tb.placePiece(1,0);
 	tb.placePiece(2,0);
 	tb.placePiece(2,1);
 	tb.placePiece(2,2);
+	tb.placePiece(1,2);
 	ASSERT_TRUE(tb.getWinner() == Blank);
 }

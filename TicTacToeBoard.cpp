@@ -41,9 +41,6 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 	if (current != Blank){
 		return current;
 	}
-	else if (current == Invalid){
-		return Invalid;
-	}
 	else {
 		board[row][column] = turn;
 		Piece placed = turn;
@@ -70,31 +67,24 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
-  	if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != Blank)
-		return getPiece(0, 0);	
-	else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != Blank)
-		return getPiece(1,0);
-	else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != Blank)
-		return getPiece(2,0);
-	else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != Blank)
-		return getPiece(0,0);
-	else if (board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != Blank)
-		return getPiece(0,1);
-	else if	(board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != Blank)
-		return getPiece(0,2);
-	else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != Blank)
-		return getPiece(0,0);
-	else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] != Blank)
-		return getPiece(2,0);
+  	for (int i = 0; i < BOARDSIZE; i++){
+		if (board[i][0] != Blank && board[i][0] == board[i][1] && board[i][1] == board[i][2]) return board[i][0];
+		if (board[0][i] != Blank && board[0][i] == board[1][i] && board[1][i] == board[2][i]) return board[0][i];
+	}
+
+	if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != Blank)
+		return board[0][0];
+	if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] != Blank)
+		return board[2][0];
 	
 	// Check to see if board is full
 	bool full = true;
 	for (int i = 0; i < BOARDSIZE; i++){
 		for (int j = 0; j < BOARDSIZE; j++){
-		if (board[i][j] == Blank){
-			full = false;
-			break;
-		}
+			if (board[i][j] == Blank){
+				full = false;
+				break;
+			}
 		}
 	}
 	if (full) return Blank;	
