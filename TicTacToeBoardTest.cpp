@@ -52,20 +52,74 @@ TEST(TicTacToeBoardTest, checkFirstTurnIsX){
 	ASSERT_TRUE(tb.placePiece(0,0) == X);
 }
 
-TEST(TicTacToeBoardTest, checkInvalidPlacePiece){
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceRowTooHighColValid){
 	TicTacToeBoard tb;
-	ASSERT_TRUE(tb.placePiece(10,15) == Invalid);
+	ASSERT_TRUE(tb.placePiece(10,1) == Invalid);
 }
 
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceColTooHighRowValid){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(1,10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceRowTooHighColTooHigh){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(10,10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceColNegativeRowNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(-10,-10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceRowTooHighColNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(10,-10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceColTooHighRowNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(-10, 10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceRowNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(-10,1) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceColNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.placePiece(0,-1) == Invalid);
+}
 TEST(TicTacToeBoardTest, checkValidPlacePiece){
 	TicTacToeBoard tb;
 	ASSERT_TRUE(tb.placePiece(0,2) == X);
+}
+
+TEST(TicTacToeBoardTest, checkValidPlacePieceToggleTurn){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.placePiece(0,1) == O);
+}
+
+TEST(TicTacToeBoardTest, checkInvalidPlacePieceToggleTurn){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(-2,10);
+	ASSERT_TRUE(tb.placePiece(0,1) == X);
 }
 
 TEST(TicTacToeBoardTest, checkPlaceNotEmpty){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
 	ASSERT_TRUE(tb.placePiece(0,0) == X);
+}
+
+TEST(TicTacToeBoardTest, checkPlaceNotEmptyToggleTurn){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.placePiece(0,1) == X);
 }
 
 TEST(TicTacToeBoardTest, checkTurnsAreTogglingX){
@@ -88,7 +142,7 @@ TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueTooHigh){
 
 TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueNegative){
 	TicTacToeBoard tb;
-	ASSERT_TRUE(tb.getPiece(-1, 2) == Invalid);
+	ASSERT_TRUE(tb.getPiece(-1,2) == Invalid);
 }
 
 TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsColValueTooHigh){
@@ -98,7 +152,27 @@ TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsColValueTooHigh){
 
 TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsColValueNegative){
 	TicTacToeBoard tb;
-	ASSERT_TRUE(tb.getPiece(2, -1) == Invalid);
+	ASSERT_TRUE(tb.getPiece(0,-1) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsBothTooHigh){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(10, 10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsBothNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(-10,-10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueNegativeColTooHigh){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(-1, 10) == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkGetPieceOutOfBoundsRowValueTooHighColNegative){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(10,-1) == Invalid);
 }
 
 TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
@@ -108,9 +182,78 @@ TEST(TicTacToeBoardTest, checkGetPieceValidSpot){
 	ASSERT_TRUE(tb.getPiece(0,0) == X);
 }
 
-TEST(TicTacToeBoardTest, checkNoWinner){
+TEST(TicTacToeBoardTest, checkGetPieceBlank){
+	TicTacToeBoard tb;
+	ASSERT_TRUE(tb.getPiece(0,0) == Blank);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerOnePiecePlaced){
 	TicTacToeBoard tb;
 	tb.placePiece(0,0);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerFirstTwoPiecesInRow){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(1,0);
+	tb.placePiece(0,1);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerSecondTwoPiecesInRow){
+	TicTacToeBoard tb;
+	tb.placePiece(0,1);
+	tb.placePiece(1,0);
+	tb.placePiece(0,2);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerFirstTwoPiecesInCol){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(1,0);
+	tb.placePiece(0,1);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerSecondTwoPiecesInCol){
+	TicTacToeBoard tb;
+	tb.placePiece(0,1);
+	tb.placePiece(1,0);
+	tb.placePiece(0,2);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerTopLeftDiagonalFirstTwoPieces){
+	TicTacToeBoard tb;
+	tb.placePiece(0,0);
+	tb.placePiece(1,0);
+	tb.placePiece(1,1);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerTopLeftDiagonalSecondTwoPieces){
+	TicTacToeBoard tb;
+	tb.placePiece(1,1);
+	tb.placePiece(1,0);
+	tb.placePiece(2,2);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerBottomLeftDiagonalFirstTwoPieces){
+	TicTacToeBoard tb;
+	tb.placePiece(2,0);
+	tb.placePiece(1,0);
+	tb.placePiece(1,1);
+	ASSERT_TRUE(tb.getWinner() == Invalid);
+}
+
+TEST(TicTacToeBoardTest, checkNoWinnerBottomLeftDiagonalSecondTwoPieces){
+	TicTacToeBoard tb;
+	tb.placePiece(0,2);
+	tb.placePiece(1,0);
+	tb.placePiece(1,1);
 	ASSERT_TRUE(tb.getWinner() == Invalid);
 }
 
@@ -206,4 +349,9 @@ TEST(TicTacToeBoardTest, checkFullBoard){
 	tb.placePiece(2,2);
 	tb.placePiece(1,2);
 	ASSERT_TRUE(tb.getWinner() == Blank);
+}
+
+TEST(TicTacToeBoardTest, checkNoFullBoard){
+	TicTacToeBoard tb;
+	ASSERT_FALSE(tb.getWinner() == Blank);
 }

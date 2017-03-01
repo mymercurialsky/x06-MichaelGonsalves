@@ -39,6 +39,7 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 {
 	Piece current = getPiece(row, column);  	
 	if (current != Blank){
+		toggleTurn();
 		return current;
 	}
 	else {
